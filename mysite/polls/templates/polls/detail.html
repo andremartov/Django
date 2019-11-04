@@ -1,0 +1,40 @@
+
+{% load static %}
+<link href="{% static 'tinymce/css/prism.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+<body>
+    <nav>
+        <div class="nav-wrapper blue lighten-1">
+        <a href="/" class="brand-logo" >Answering question: {{ question.question_text }}</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="http://127.0.0.1:8000/admin">Admin</a></li>
+            <li><a href="http://127.0.0.1:8000/polls">Polls</a></li>
+            <li><a href="http://127.0.0.1:8000/about">About</a></li>
+        </ul>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+<div class="row" id="detailsId">
+    <div class="col s12">
+    <h3>{{ question.question_text }}</h3>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form action="{% url 'polls:vote' question.id %}" method="post" class="col s12">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <p>
+        <label>
+            <input name="choice" type="radio" id="choice{{ forloop.counter }}"value="{{ choice.id }}" checked/>
+            <span>{{ choice.choice_text }}</span>
+        </label>
+        </p>
+    {% endfor %}
+    <button  class="btn waves-effect waves-light" type="submit" value="Submit">
+        <i class="material-icons right">send</i>
+    </button>
+    </form>
+    </div>
+</div>

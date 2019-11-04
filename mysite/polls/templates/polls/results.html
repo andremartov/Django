@@ -1,0 +1,30 @@
+{% load static %}
+<link href="{% static 'tinymce/css/prism.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+<body>
+    <nav>
+        <div class="nav-wrapper blue lighten-1">
+        <a href="/" class="brand-logo" >Results for: {{ question.question_text }}</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="http://127.0.0.1:8000/polls">Polls</a></li>
+            <li><a href="collapsible.html">About</a></li>
+        </ul>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+
+<div class="row" id="resultsId">
+    <div class="col s12">
+        <h3>{{ question.question_text }}</h3>
+    </div>
+    {% for choice in question.choice_set.all %}
+    <div class="row">
+        <div class="col s4"><span class="flow-text">{{ choice.choice_text }}</span></div>
+        <div class="col s4 offset-4s"><span class="flow-text">{{ choice.votes }} vote{{ choice.votes|pluralize }}</span></div>
+    </div>
+    {% endfor %}
+</div>
